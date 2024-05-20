@@ -42,7 +42,7 @@
  * @see {@link https://firebase.google.com/|Firebase}
  */
 import React, {useState} from 'react'
-import robot from "./assets/pharmacy-logo-big.png"
+import logo from "./assets/pharmacy-logo-big.png"
 import upload from "./assets/upload-icon.png"
 import "./style/Register.css"
 import Input from './components/Input'
@@ -66,23 +66,44 @@ const Add = () => {
     const history = useNavigate();
     const [buttonDisable, setButtonDisable] = useState(true);
 
+    // const handleFileChange = async (event) => {
+    //   setSelectedFile('Loading');
+    //     const file = event.target.files[0];
+    //     const imgs = ref(storage, `Imgs/${v4()}`);
+        
+    //     try {
+    //       const [uploadResult] = await Promise.all([
+    //         uploadBytes(imgs, file),
+    //       ]);
+      
+    //       const downloadURL = await getDownloadURL(uploadResult.ref);
+    //       setSelectedImg(downloadURL);
+    //       setSelectedFile(file);
+    //     } catch (error) {
+    //       console.error('Error uploading file:', error);
+    //     }
+    //   };
     const handleFileChange = async (event) => {
+      console.log("File change event triggered.");
+
       setSelectedFile('Loading');
         const file = event.target.files[0];
-        const imgs = ref(storage, `Imgs/${v4()}`);
+        const imgRef = ref(storage, `Imgs/${v4()}`);
         
         try {
+          console.log("Uploading file to Firebase Storage..."); // firebase go
           const [uploadResult] = await Promise.all([
-            uploadBytes(imgs, file),
+            uploadBytes(imgRef, file),
           ]);
       
           const downloadURL = await getDownloadURL(uploadResult.ref);
           setSelectedImg(downloadURL);
           setSelectedFile(file);
+          console.log("File uploaded successfully:", downloadURL); // done, uploaded succeccfully kk
         } catch (error) {
           console.error('Error uploading file:', error);
         }
-      };
+      };    
       const addEvent = async () => {
         const valRef = collection(firestore, "Events");
       
@@ -127,7 +148,7 @@ const Add = () => {
     }
     return (
         <div className='register'>
-          <img src={robot} className='register-robot'/>
+          <img src={logo} className='register-logo'/>
           {/* <img src={logo} className='logo1'/> */}
 
           <div className='register-inputs'>
@@ -196,3 +217,5 @@ const Add = () => {
 }
 
 export default Add
+
+
